@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag registry.cn-shanghai.aliyuncs.com/mmx233/tdlib:latest
+        run: docker build . --file Dockerfile --tag registry.cn-shanghai.aliyuncs.com/mmx233/tdlib:alpine
 
 #      - name: Login
 #        run: docker login --username=${{ secrets.username }} --password=${{ secrets.pwd }} registry.cn-shanghai.aliyuncs.com
