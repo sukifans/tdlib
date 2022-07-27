@@ -10,6 +10,6 @@ WORKDIR /td
 RUN git checkout v1.8.0
 WORKDIR /td/build
 RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local ..
-RUN cmake --build . --target install -j 3
+RUN cmake --build . --target install -j $(nproc)
 WORKDIR /
 RUN rm -rf /td
