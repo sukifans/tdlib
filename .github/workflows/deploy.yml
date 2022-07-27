@@ -9,13 +9,31 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag registry.cn-shanghai.aliyuncs.com/mmx233/tdlib:alpine
+      - name: Setup QEMU Emulator
+        uses: docker/setup-qemu-action@master
+        with:
+          platforms: all
 
-      - name: Login
-        run: docker login --username=${{ secrets.username }} --password=${{ secrets.pwd }} registry.cn-shanghai.aliyuncs.com
+      - name: Setup Docker Buildx Command
+        id: buildx
+        uses: docker/setup-buildx-action@master
 
-      - name: Push
-        run: docker push registry.cn-shanghai.aliyuncs.com/mmx233/tdlib:alpine
+      - name: Login to docker registry
+        uses: docker/login-action@v2
+        with:
+          registry: registry.cn-shanghai.aliyuncs.com
+          username: ${{ secrets.username }}
+          password: ${{ secrets.pwd }}
+
+      - name: Build Docker Image and Push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          tags: mmx233/tdlib:alpine
