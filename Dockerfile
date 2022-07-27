@@ -3,7 +3,7 @@ FROM golang:alpine
 RUN apk update
 RUN apk upgrade
 
-RUN apk add --update alpine-sdk linux-headers git zlib-dev gperf php cmake libressl-dev zlib-static
+RUN apk add --update alpine-sdk linux-headers git zlib-dev gperf php cmake libressl-dev zlib-static ccache readline
 WORKDIR /
 RUN git clone https://github.com/tdlib/td.git
 WORKDIR /td
