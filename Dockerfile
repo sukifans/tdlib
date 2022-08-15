@@ -14,3 +14,5 @@ RUN git clone https://github.com/tdlib/td.git &&\
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local .. && \
     cmake --build . --target install -j6 && \
     rm -rf /td
+
+WORKDIR /go
