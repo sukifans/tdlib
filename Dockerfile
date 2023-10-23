@@ -1,9 +1,10 @@
-FROM golang:alpine
+FROM golang:bullseye
 
-RUN apk update &&\
-    apk upgrade --no-cache &&\
-    apk add --no-cache alpine-sdk linux-headers git zlib-dev gperf php cmake libressl-dev zlib-static ccache readline && \
-    rm -rf /var/cache/apk/*
+RUN apt-get update && \
+    apt-get upgrade && \
+    apt-get install make git zlib1g-dev libssl-dev gperf php-cli cmake clang libc++-dev libc++abi-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
 
@@ -11,8 +12,8 @@ RUN git clone https://github.com/tdlib/td.git &&\
     cd td &&\
     git checkout daf4801 &&\
     mkdir build && cd build && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local .. && \
+    CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local .. && \
     cmake --build . --target install -j6 && \
     rm -rf /td
 
-WORKDIR /go
+WORKDIR $GOPATH
