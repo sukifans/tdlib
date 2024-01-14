@@ -9,7 +9,7 @@ WORKDIR /
 
 RUN git clone https://github.com/tdlib/td.git &&\
     cd td &&\
-    git checkout daf4801 &&\
+    git checkout 1a50ec4 &&\
     mkdir build && cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local .. && \
     cmake --build . --target install -j6 && \
