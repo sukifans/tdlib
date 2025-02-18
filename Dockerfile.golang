@@ -1,0 +1,9 @@
+FROM mmx233/tdlib:latest AS tdlib
+FROM golang:alpine
+
+COPY --from=tdlib /usr/local/td/* /usr/local/td/
+
+RUN apk update &&\
+    apk upgrade --no-cache &&\
+    apk add --no-cache alpine-sdk zlib-dev zlib-static libressl-dev && \
+    rm -rf /var/cache/apk/*
