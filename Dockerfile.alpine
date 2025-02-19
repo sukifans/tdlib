@@ -1,16 +1,16 @@
-FROM golang:alpine
-
-RUN apk update &&\
-    apk upgrade --no-cache &&\
-    apk add --no-cache alpine-sdk linux-headers git zlib-dev gperf php cmake libressl-dev zlib-static ccache readline && \
-    rm -rf /var/cache/apk/*
+FROM alpine:latest
 
 WORKDIR /
 
-RUN git clone https://github.com/tdlib/td.git &&\
-    cd td &&\
-    git checkout 22d49d5 &&\
+RUN apk update && \
+    apk upgrade --no-cache && \
+    apk add --no-cache alpine-sdk linux-headers git zlib-dev gperf php cmake libressl-dev zlib-static && \
+    git clone https://github.com/tdlib/td.git && \
+    cd td && \
+    git checkout 22d49d5 && \
     mkdir build && cd build && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local .. && \
-    cmake --build . --target install -j2 && \
-    rm -rf /td
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/tdlib .. && \
+    cmake --build . --target install -j20 && \
+    apk del gperf php cmake git && \
+    rm -rf /td && \
+    rm -rf /var/cache/apk/*
