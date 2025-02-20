@@ -1,7 +1,7 @@
 FROM mmx233/tdlib:alpine AS tdlib
 FROM golang:alpine
 
-COPY --from=tdlib /tdlib/* /usr/local/
+COPY --from=tdlib /tdlib /usr/local/
 
 RUN apk update &&\
     apk upgrade --no-cache &&\
